@@ -14,7 +14,7 @@
 <body>
 <div id="loginLink"><a href="Login.jsp">Login</a></div>
 <h1>My Site</h1>
-<form method="get" action="List">
+<form method="get" action="UpdateList">
     <input type="submit">
 </form>
 </body>

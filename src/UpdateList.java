@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "UpdateList", urlPatterns = "/List")
+@WebServlet(name = "UpdateList", urlPatterns = "/UpdateList")
 public class UpdateList extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -20,6 +20,7 @@ public class UpdateList extends HttpServlet {
         ResultSet rset = null;
 
         try {
+            System.out.println("working");
             // Load the driver
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
 
@@ -43,8 +44,8 @@ public class UpdateList extends HttpServlet {
                 String name = rset.getString(2);
                 output.append("<li>").append(id);
                 output.append(": ").append(name);
-                output.append("</li>");
                 output.append("<input type=\"button\" class=\"editItem\" value=\"edit\"><input type=\"button\" class=\"deleteItem\" value=\"delete\">");
+                output.append("</li>");
             }
 
             output.append("</ul><input type=\"button\" class=\"addItem\" value=\"add\"></form></body></html>");
