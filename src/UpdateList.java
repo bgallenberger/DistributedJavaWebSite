@@ -1,4 +1,4 @@
-package main;
+package src;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -6,8 +6,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.*;
 
-@WebServlet(name = "UpdateList", urlPatterns = "/UpdateList")
+@WebServlet(name = "UpdateList", urlPatterns = "/List")
 public class UpdateList extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -27,17 +28,24 @@ public class UpdateList extends HttpServlet {
             String absPath = getServletContext().getRealPath("/") + "../../db";
 
             // Create a connection
-            Connection conn = DriverManager.getConnection(
+            conn = DriverManager.getConnection(
                     "jdbc:derby:" + absPath,
                     "brian",  // db username
                     "brian"); // db password
 
             // Create a statement to executeSQL
-            Statement stmt = conn.createStatement();
+            stmt = conn.createStatement();
 
-            ResultSet rset = stmt.executeQuery("SELECT Item_ID, Item_Name FROM All_Items");
+            rset = stmt.executeQuery("SELECT Item_ID, Item_Name FROM All_Items");
 
-            StringBuilder output = new StringBuilder("<html><body><form><ul>");
+            StringBuilder output = new StringBuilder("<html>" +
+                    "<head>\n" +
+                    "    <title>List</title>\n" +
+                    "    <link rel=\"stylesheet\" type=\"text/css\" href=\"resources/style.css\">\n" +
+                    "</head><body>" +
+                    "   <div id=\"loginLink\"><a href=\"/DistributedJavaWebSite/view/List.jsp\">Login</a></div>\n" +
+                    "   <h1>My Site</h1>" +
+                    "<form><ul>");
 
             while (rset.next()) {
                 int id = rset.getInt(1);
@@ -83,3 +91,4 @@ public class UpdateList extends HttpServlet {
         }
     }
 }
+
