@@ -9,7 +9,7 @@
 <html>
 <head>
     <title>Title</title>
-    <link rel="stylesheet" type="text/css" href="http://localhost:8080/bgallenbergerWebSite/resources/style.css">
+    <link rel="stylesheet" type="text/css" href="../resources/style.css">
 </head>
 <body>
 <h1>Login to My Site</h1>

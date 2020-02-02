@@ -8,17 +8,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Detail</title>
-    <link rel="stylesheet" type="text/css" href="http://localhost:8080/bgallenbergerWebSite/resources/style.css">
+    <title>List</title>
+    <link rel="stylesheet" type="text/css" href="../resources/style.css">
 </head>
 <body>
 <div id="loginLink"><a href="Login.jsp">Login</a></div>
 <h1>My Site</h1>
-<form>
-    <h3>Name:</h3><input type="text" value="Item 1">
-    <h3>Price:</h3><input type="text" value="9.99">
-    <h3>color:</h3><input type="text" value="red">
-    <input type="submit" value="save">
+<form method="get" action="List">
+    <input type="submit">
 </form>
 </body>
 </html>

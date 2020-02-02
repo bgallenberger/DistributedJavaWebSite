@@ -8,12 +8,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Home Page</title>
-    <link rel="stylesheet" type="text/css" href="http://localhost:8080/bgallenbergerWebSite/resources/style.css">
+    <title>List</title>
+    <link rel="stylesheet" type="text/css" href="../resources/style.css">
 </head>
 <body>
 <div id="loginLink"><a href="Login.jsp">Login</a></div>
 <h1>My Site</h1>
-<h2>stuff</h2>
+<form method="get" action="List">
+    <input type="submit">
+</form>
 </body>
 </html>

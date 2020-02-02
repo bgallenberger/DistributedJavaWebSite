@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="DistributedJavaWebSite:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>DistributedJavaWebSite</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="DistributedJavaWebSite.war">
+      <element id="artifact" artifact-name="DistributedJavaWebSite:war exploded" />
+    </root>
+  </artifact>
+</component>
