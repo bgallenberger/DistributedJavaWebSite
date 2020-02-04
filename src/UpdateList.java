@@ -21,7 +21,7 @@ public class UpdateList extends HttpServlet {
             // Load the driver
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
 
-            String absPath = getServletContext().getRealPath("/") + "../../db";
+            String absPath = getServletContext().getRealPath("/") + "../classes/db";
             System.out.println(absPath);
             // Create a connection
             conn = DriverManager.getConnection(
@@ -41,22 +41,30 @@ public class UpdateList extends HttpServlet {
                     "</head><body>" +
                     "   <div id=\"loginLink\"><a href=\"/DistributedJavaWebSite/view/List.jsp\">Login</a></div>\n" +
                     "   <h1>My Site</h1>" +
-                    "<form><ul>");
+                    "<form><table>");
 
-            output.append("<li>");
+            output.append("<p>");
             output.append(absPath);
-            output.append("</li>");
+            output.append("</p>");
 
+            output.append("<table>");
+            output.append("<th>ID</th>");
+            output.append("<th>Name</th>");
+            output.append("<th>Edit</th>");
+            output.append("<th>Delete</th>");
+
+            int loop = 0;
             while (rset.next()) {
-                int id = rset.getInt(1);
+                System.out.println("looping " + ++loop);
+                int id = rset.getInt("Item_Id");
                 String name = rset.getString(2);
-                output.append("<li>").append(id);
-                output.append(": ").append(name);
-                output.append("<input type=\"button\" class=\"editItem\" value=\"edit\"><input type=\"button\" class=\"deleteItem\" value=\"delete\">");
-                output.append("</li>");
+                output.append("<tr><td>").append(id);
+                output.append("</td><td>").append(name);
+                output.append("</td><td><input type=\"button\" class=\"editItem\" value=\"edit\"></td><td><input type=\"button\" class=\"deleteItem\" value=\"delete\"></td>");
+                output.append("</tr>");
             }
 
-            output.append("</ul><input type=\"button\" class=\"addItem\" value=\"add\"></form></body></html>");
+            output.append("</table><p><input type=\"button\" class=\"addItem\" value=\"add\"></p></form></body></html>");
 
             // Send the HTML as the response
             response.setContentType("text/html");
