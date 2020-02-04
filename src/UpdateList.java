@@ -10,9 +10,6 @@ import java.sql.*;
 
 @WebServlet(name = "UpdateList", urlPatterns = "/List")
 public class UpdateList extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Declare outside the try/catch so the variables are in scope in the finally block
@@ -21,12 +18,11 @@ public class UpdateList extends HttpServlet {
         ResultSet rset = null;
 
         try {
-            System.out.println("working");
             // Load the driver
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
 
             String absPath = getServletContext().getRealPath("/") + "../../db";
-
+            System.out.println(absPath);
             // Create a connection
             conn = DriverManager.getConnection(
                     "jdbc:derby:" + absPath,
@@ -46,6 +42,10 @@ public class UpdateList extends HttpServlet {
                     "   <div id=\"loginLink\"><a href=\"/DistributedJavaWebSite/view/List.jsp\">Login</a></div>\n" +
                     "   <h1>My Site</h1>" +
                     "<form><ul>");
+
+            output.append("<li>");
+            output.append(absPath);
+            output.append("</li>");
 
             while (rset.next()) {
                 int id = rset.getInt(1);
