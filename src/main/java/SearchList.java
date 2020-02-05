@@ -1,5 +1,3 @@
-package src;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,31 +6,43 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.*;
 
-@WebServlet(name = "UpdateList", urlPatterns = "/List")
-public class UpdateList extends HttpServlet {
+@WebServlet(name = "SearchList", urlPatterns = "/List")
+public class SearchList extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Declare outside the try/catch so the variables are in scope in the finally block
         Connection conn = null;
-        Statement stmt = null;
+        PreparedStatement pstmt = null;
         ResultSet rset = null;
+        String searchName = "";
 
         try {
+            searchName = request.getParameter("Item_Name");
+            if(searchName == null){
+                searchName = "";
+            }
             // Load the driver
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
 
-            String absPath = getServletContext().getRealPath("/") + "../classes/db";
-            System.out.println(absPath);
+            String absPath = getServletContext().getRealPath("/") + "../../db";
+
             // Create a connection
             conn = DriverManager.getConnection(
                     "jdbc:derby:" + absPath,
                     "ITEMS",  // db username
                     "brian"); // db password
 
+            // Build the query as a String
+            StringBuilder sql = new StringBuilder("select Item_ID, Item_Name from All_Items Where Item_Name like ? order by Item_Id");
             // Create a statement to executeSQL
-            stmt = conn.createStatement();
+            pstmt = conn.prepareStatement(sql.toString());
 
-            rset = stmt.executeQuery("SELECT Item_ID, Item_Name FROM All_Items");
+            pstmt.setString(1, "%" + searchName + "%");
+
+            rset = pstmt.executeQuery();
 
             StringBuilder output = new StringBuilder("<html>" +
                     "<head>\n" +
@@ -41,14 +51,16 @@ public class UpdateList extends HttpServlet {
                     "</head><body>" +
                     "   <div id=\"loginLink\"><a href=\"/DistributedJavaWebSite/view/List.jsp\">Login</a></div>\n" +
                     "   <h1>My Site</h1>" +
-                    "<form method=\"get\" action=\"/DistributedJavaWebSite/Search\">" +
+                    "<form method=\"get\" action=\"/DistributedJavaWebSite/List\">" +
                     "<input type=\"text\" class=\"searchItem\" value=\"search\" name=\"Item_Name\">" +
                     "</form>" +
                     "<form><table>");
 
-            output.append("<p>");
-            output.append(absPath);
-            output.append("</p>");
+            if(searchName != null) {
+                output.append("<p> Searching for: ");
+                output.append(searchName);
+                output.append("</p>");
+            }
 
             output.append("<table>");
             output.append("<th>ID</th>");
@@ -56,9 +68,7 @@ public class UpdateList extends HttpServlet {
             output.append("<th>Edit</th>");
             output.append("<th>Delete</th>");
 
-            int loop = 0;
             while (rset.next()) {
-                System.out.println("looping " + ++loop);
                 int id = rset.getInt("Item_Id");
                 String name = rset.getString(2);
                 output.append("<tr><td>").append(id);
@@ -72,11 +82,13 @@ public class UpdateList extends HttpServlet {
             // Send the HTML as the response
             response.setContentType("text/html");
             response.getWriter().print(output.toString());
+
         } catch (SQLException | ClassNotFoundException e) {
             // If there's an exception locating the driver, send IT as the response
             response.getWriter().print(e.getMessage());
             e.printStackTrace();
         } finally {
+
             if (rset != null) {
                 try {
                     rset.close();
@@ -84,9 +96,9 @@ public class UpdateList extends HttpServlet {
                     e.printStackTrace();
                 }
             }
-            if (stmt != null) {
+            if (pstmt != null) {
                 try {
-                    stmt.close();
+                    pstmt.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -98,8 +110,6 @@ public class UpdateList extends HttpServlet {
                     e.printStackTrace();
                 }
             }
-
         }
     }
 }
-

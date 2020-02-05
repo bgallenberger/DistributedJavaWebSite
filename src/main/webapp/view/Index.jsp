@@ -15,7 +15,7 @@
 <div id="loginLink"><a href="Login.jsp">Login</a></div>
 <h1>My Site</h1>
 <h2>stuff</h2>
-<form action="List.jsp" method="get">
+<form action="/DistributedJavaWebSite/List" method="get">
     <input type="submit" value="Go to List">
 </form>
 </body>

@@ -1,5 +1,3 @@
-package src;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,40 +6,33 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.*;
 
-@WebServlet(name = "SearchList", urlPatterns = "/Search")
-public class SearchList extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//this isnt being used anymore
 
-    }
+@WebServlet(name = "UpdateList", urlPatterns = "/a")
+public class UpdateList extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Declare outside the try/catch so the variables are in scope in the finally block
         Connection conn = null;
-        PreparedStatement pstmt = null;
+        Statement stmt = null;
         ResultSet rset = null;
 
         try {
-            String searchName = request.getParameter("Item_Name");
             // Load the driver
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
 
-            String absPath = getServletContext().getRealPath("/") + "../classes/db";
-
+            String absPath = getServletContext().getRealPath("/") + "../../db";
+            System.out.println(absPath);
             // Create a connection
             conn = DriverManager.getConnection(
                     "jdbc:derby:" + absPath,
                     "ITEMS",  // db username
                     "brian"); // db password
 
-            // Build the query as a String
-            StringBuilder sql = new StringBuilder("select Item_ID, Item_Name from All_Items");
-            sql.append("Where Item_Name like %?%");
             // Create a statement to executeSQL
-            pstmt = conn.prepareStatement(sql.toString());
+            stmt = conn.createStatement();
 
-            pstmt.setString(1, searchName);
-
-            rset = pstmt.executeQuery();
+            rset = stmt.executeQuery("SELECT Item_ID, Item_Name FROM All_Items");
 
             StringBuilder output = new StringBuilder("<html>" +
                     "<head>\n" +
@@ -55,10 +46,6 @@ public class SearchList extends HttpServlet {
                     "</form>" +
                     "<form><table>");
 
-            output.append("<p>");
-            output.append(searchName);
-            output.append("</p>");
-
             output.append("<table>");
             output.append("<th>ID</th>");
             output.append("<th>Name</th>");
@@ -67,7 +54,7 @@ public class SearchList extends HttpServlet {
 
             int loop = 0;
             while (rset.next()) {
-                System.out.println("looping search " + ++loop);
+                System.out.println("looping " + ++loop);
                 int id = rset.getInt("Item_Id");
                 String name = rset.getString(2);
                 output.append("<tr><td>").append(id);
@@ -81,13 +68,11 @@ public class SearchList extends HttpServlet {
             // Send the HTML as the response
             response.setContentType("text/html");
             response.getWriter().print(output.toString());
-
         } catch (SQLException | ClassNotFoundException e) {
             // If there's an exception locating the driver, send IT as the response
             response.getWriter().print(e.getMessage());
             e.printStackTrace();
         } finally {
-
             if (rset != null) {
                 try {
                     rset.close();
@@ -95,9 +80,9 @@ public class SearchList extends HttpServlet {
                     e.printStackTrace();
                 }
             }
-            if (pstmt != null) {
+            if (stmt != null) {
                 try {
-                    pstmt.close();
+                    stmt.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -109,6 +94,8 @@ public class SearchList extends HttpServlet {
                     e.printStackTrace();
                 }
             }
+
         }
     }
 }
+
