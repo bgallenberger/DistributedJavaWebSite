@@ -26,7 +26,7 @@ public class UpdateList extends HttpServlet {
             // Create a connection
             conn = DriverManager.getConnection(
                     "jdbc:derby:" + absPath,
-                    "brian",  // db username
+                    "ITEMS",  // db username
                     "brian"); // db password
 
             // Create a statement to executeSQL
@@ -41,6 +41,9 @@ public class UpdateList extends HttpServlet {
                     "</head><body>" +
                     "   <div id=\"loginLink\"><a href=\"/DistributedJavaWebSite/view/List.jsp\">Login</a></div>\n" +
                     "   <h1>My Site</h1>" +
+                    "<form method=\"get\" action=\"/DistributedJavaWebSite/Search\">" +
+                    "<input type=\"text\" class=\"searchItem\" value=\"search\" name=\"Item_Name\">" +
+                    "</form>" +
                     "<form><table>");
 
             output.append("<p>");
