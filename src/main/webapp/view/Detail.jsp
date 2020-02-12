@@ -12,8 +12,7 @@
     <link rel="stylesheet" type="text/css" href="../resources/style.css">
 </head>
 <body>
-<div id="loginLink"><a href="Login.jsp">Login</a></div>
-<h1>My Site</h1>
+<jsp:include page="Header.jsp"/>
 <form>
     <h3>Name:</h3><input type="text" value="Item 1">
     <h3>Price:</h3><input type="text" value="9.99">

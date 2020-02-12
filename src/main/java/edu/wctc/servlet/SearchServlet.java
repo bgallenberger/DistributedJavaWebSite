@@ -1,3 +1,7 @@
+package edu.wctc.servlet;
+
+import edu.wctc.CloseConnection;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -6,34 +10,45 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.*;
 
-//this isnt being used anymore
+@WebServlet(name = "SearchList", urlPatterns = "/Search")
+public class SearchServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-@WebServlet(name = "UpdateList", urlPatterns = "/a")
-public class UpdateList extends HttpServlet {
+    }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Declare outside the try/catch so the variables are in scope in the finally block
         Connection conn = null;
-        Statement stmt = null;
+        PreparedStatement pstmt = null;
         ResultSet rset = null;
+        String searchName = "";
 
         try {
+            searchName = request.getParameter("Item_Name");
+            if(searchName == null){
+                searchName = "";
+            }
             // Load the driver
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
 
             String absPath = getServletContext().getRealPath("/") + "../../db";
-            System.out.println(absPath);
+
             // Create a connection
             conn = DriverManager.getConnection(
                     "jdbc:derby:" + absPath,
                     "ITEMS",  // db username
                     "brian"); // db password
 
+            // Build the query as a String
+            StringBuilder sql = new StringBuilder("select Item_ID, Item_Name from All_Items Where Item_Name like ? order by Item_Id");
             // Create a statement to executeSQL
-            stmt = conn.createStatement();
+            pstmt = conn.prepareStatement(sql.toString());
 
-            rset = stmt.executeQuery("SELECT Item_ID, Item_Name FROM All_Items");
+            pstmt.setString(1, "%" + searchName + "%");
 
+            rset = pstmt.executeQuery();
+
+            //make html
             StringBuilder output = new StringBuilder("<html>" +
                     "<head>\n" +
                     "    <title>List</title>\n" +
@@ -46,15 +61,19 @@ public class UpdateList extends HttpServlet {
                     "</form>" +
                     "<form><table>");
 
+            if(searchName != null) {
+                output.append("<p> Searching for: ");
+                output.append(searchName);
+                output.append("</p>");
+            }
+
             output.append("<table>");
             output.append("<th>ID</th>");
             output.append("<th>Name</th>");
             output.append("<th>Edit</th>");
             output.append("<th>Delete</th>");
 
-            int loop = 0;
             while (rset.next()) {
-                System.out.println("looping " + ++loop);
                 int id = rset.getInt("Item_Id");
                 String name = rset.getString(2);
                 output.append("<tr><td>").append(id);
@@ -68,34 +87,13 @@ public class UpdateList extends HttpServlet {
             // Send the HTML as the response
             response.setContentType("text/html");
             response.getWriter().print(output.toString());
+
         } catch (SQLException | ClassNotFoundException e) {
             // If there's an exception locating the driver, send IT as the response
             response.getWriter().print(e.getMessage());
             e.printStackTrace();
         } finally {
-            if (rset != null) {
-                try {
-                    rset.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
+            CloseConnection.closeAll(conn, pstmt, rset);
         }
     }
 }
-

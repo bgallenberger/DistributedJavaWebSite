@@ -6,8 +6,7 @@
     <link rel="stylesheet" type="text/css" href="../resources/style.css">
 </head>
 <body>
-<div id="loginLink"><a href="Login.jsp">Login</a></div>
-<h1>My Site</h1>
+<jsp:include page="Header.jsp"/>
 <form method="get" action="/DistributedJavaWebSite/List">
     <input type="submit" value="Check the List">
 </form>
