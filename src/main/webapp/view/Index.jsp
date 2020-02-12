@@ -29,6 +29,5 @@
     <input type="submit" value="Go to Search2">
 </form>
 
-<jsp:include page="Footer.jsp"/>
 </body>
 </html>

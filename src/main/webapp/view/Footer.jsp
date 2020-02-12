@@ -11,6 +11,6 @@
     <title>Title</title>
 </head>
 <body>
-
+<a href="view/Index.jsp">Home</a>
 </body>
 </html>
