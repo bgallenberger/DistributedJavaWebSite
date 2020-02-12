@@ -23,6 +23,6 @@
     </c:forEach>
 </table>
 <!-- see base tag in head -->
-<a href="index.jsp">Home</a>
+<a href="view/Index.jsp">Home</a>
 </body>
 </html>
