@@ -19,5 +19,6 @@
     <h3>color:</h3><input type="text" value="red">
     <input type="submit" value="save">
 </form>
+<jsp:include page="Footer.jsp"/>
 </body>
 </html>

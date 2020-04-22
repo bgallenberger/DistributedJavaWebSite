@@ -6,23 +6,20 @@ import javax.validation.constraints.*;
 
 @Data
 @Entity
-@Table(name = "ITEM_DETAILS")
-public class ItemDetail {
+@Table(name = "CATEGORY")
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ITEM_ID")
-    private int itemId;
+    @Column(name = "CATEGORY_ID")
+    private int CategoryId;
 
-    @Min(value = 1, message = "greater than 0")
-    @Column(name = "PRICE")
-    private double price;
-
+    @NotNull(message = "required")
     @Size(min = 1, max = 30, message = "1-30 characters")
     @Column(name = "ITEM_COLOR")
-    private String color;
+    private String CategoryName;
 
-    public ItemDetail() {
+    public Category(){
+
     }
-
 }

@@ -10,7 +10,6 @@
 <form method="get" action="/DistributedJavaWebSite/List">
     <input type="submit" value="Check the List">
 </form>
-<jsp:include page="Header.jsp"/>
 <jsp:include page="Footer.jsp"/>
 </form>
 </body>
