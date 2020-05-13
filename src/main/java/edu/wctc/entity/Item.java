@@ -19,18 +19,22 @@ public class Item {
     @Column(name = "ITEM_NAME")
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "CATEGORY_ID")
+    @NotNull
+    @Size(min = 1, max = 8, message = "must be a valid category 1-8")
+    @Column(name = "CATEGORY_ID")
     private int categoryId;
 
+    /*
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "DETAIL_ID")
     private ItemDetail detail;
 
+*/
     public Item(){
     }
 
-    public Item(String name){
+    public Item(String name, int categoryId){
         this.name = name;
+        this.categoryId = categoryId;
     }
 }

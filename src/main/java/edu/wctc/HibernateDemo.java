@@ -33,7 +33,7 @@ public class HibernateDemo {
         session.beginTransaction();
 
         // Do stuff
-        Item pizza = new Item("Pizza");
+        Item pizza = new Item("Pizza", 6);
 
         session.save(pizza);
 

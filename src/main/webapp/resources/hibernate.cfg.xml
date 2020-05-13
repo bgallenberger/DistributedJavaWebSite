@@ -9,7 +9,7 @@
         <!-- JDBC Database connection settings -->
         <property name="connection.driver_class">org.apache.derby.jdbc.EmbeddedDriver</property>
         <property name="connection.url">jdbc:derby:db</property>
-        <property name="connection.username">brian</property>
+        <property name="connection.username">items</property>
         <property name="connection.password">brian</property>
 
         <!-- JDBC connection pool settings ... using built-in test pool -->
